@@ -1,0 +1,295 @@
+{
+  "binary_version": "1.9.4-3",
+  "binary": "libjsoncpp24",
+  "_comment": "foo",
+  "result": [
+    {
+      "hash": "4f60bee0e7e18de295b039f83a88a86c8fe690e9",
+      "architecture": "kfreebsd-i386"
+    },
+    {
+      "hash": "9c7d823c083aa78ad9de515be0adf1b8baba317b",
+      "architecture": "kfreebsd-amd64"
+    },
+    {
+      "hash": "b19818cd3362ede53005e5d14b4e2e884a07b1f4",
+      "architecture": "hurd-i386"
+    },
+    {
+      "hash": "474faff508bc0cf8de8021c6f067b9f59a461f38",
+      "architecture": "powerpc"
+    },
+    {
+      "hash": "4bcc22319d1252fe21a63173adf0f4ea8a15d65c",
+      "architecture": "riscv64"
+    },
+    {
+      "hash": "7cc99cab774a25e86a378e6b256b432b44f4b3da",
+      "architecture": "ia64"
+    },
+    {
+      "hash": "6de0703f5f676e6c1dbc295aae0a5804628d6a66",
+      "architecture": "hppa"
+    },
+    {
+      "hash": "7d46b781d1368fa683a8b52277f92e733485e764",
+      "architecture": "m68k"
+    },
+    {
+      "hash": "4a098bf07fa1bfde7c2010dc8397e4bac3a0a7df",
+      "architecture": "x32"
+    },
+    {
+      "hash": "8a970b264d147064d0d1a0cc49cb2f680e13aaed",
+      "architecture": "ppc64"
+    },
+    {
+      "hash": "b96ad7d0a0cdbd75a4ecd65e81e2753dc9335edc",
+      "architecture": "sparc64"
+    },
+    {
+      "hash": "93d94787fb4abccfa12a59e1338456e612df3438",
+      "architecture": "alpha"
+    },
+    {
+      "hash": "d64ca9c176156fa7c9dfe60e836968d6aec08eb0",
+      "architecture": "sh4"
+    },
+    {
+      "hash": "70c5a464c0509b67101e28a0278cf74b11b358fa",
+      "architecture": "arm64"
+    },
+    {
+      "hash": "2b10f49e8877a974306634780bde4aa7f49d405c",
+      "architecture": "armhf"
+    },
+    {
+      "hash": "665cec6be7e17bbc582f199d172bb763d1e75142",
+      "architecture": "ppc64el"
+    },
+    {
+      "hash": "1789246e9bb56759d0c8c5d0aac094d028cc01c1",
+      "architecture": "s390x"
+    },
+    {
+      "hash": "21ed4f6fd02d885076929c1619ccde30a7f0ca60",
+      "architecture": "amd64"
+    },
+    {
+      "hash": "0919f9f80cb71214d6d070b6b66f12a9e87f5829",
+      "architecture": "armel"
+    },
+    {
+      "hash": "b275d57b6c13d57b4a9038df652fe7fc02841bb8",
+      "architecture": "i386"
+    },
+    {
+      "hash": "75787c729c848903d353a863463aad102e07a55d",
+      "architecture": "mipsel"
+    },
+    {
+      "hash": "ce676f00606b5be88b131f8f20691d1f0554b9a9",
+      "architecture": "mips64el"
+    }
+  ],
+  "fileinfo": {
+    "b96ad7d0a0cdbd75a4ecd65e81e2753dc9335edc": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_sparc64.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-sparc64/main/libj/libjsoncpp",
+        "first_seen": "20201209T152751Z",
+        "size": 66008
+      }
+    ],
+    "7cc99cab774a25e86a378e6b256b432b44f4b3da": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_ia64.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-ia64/main/libj/libjsoncpp",
+        "first_seen": "20201209T152751Z",
+        "size": 90048
+      }
+    ],
+    "4f60bee0e7e18de295b039f83a88a86c8fe690e9": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_kfreebsd-i386.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-kfreebsd-i386/main/libj/libjsoncpp",
+        "first_seen": "20201209T190005Z",
+        "size": 84192
+      }
+    ],
+    "0919f9f80cb71214d6d070b6b66f12a9e87f5829": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_armel.deb",
+        "archive_name": "debian",
+        "path": "/pool/main/libj/libjsoncpp",
+        "first_seen": "20201209T152717Z",
+        "size": 66908
+      }
+    ],
+    "21ed4f6fd02d885076929c1619ccde30a7f0ca60": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_amd64.deb",
+        "archive_name": "debian",
+        "path": "/pool/main/libj/libjsoncpp",
+        "first_seen": "20201209T152717Z",
+        "size": 78984
+      }
+    ],
+    "70c5a464c0509b67101e28a0278cf74b11b358fa": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_arm64.deb",
+        "archive_name": "debian",
+        "path": "/pool/main/libj/libjsoncpp",
+        "first_seen": "20201209T152717Z",
+        "size": 72476
+      }
+    ],
+    "1789246e9bb56759d0c8c5d0aac094d028cc01c1": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_s390x.deb",
+        "archive_name": "debian",
+        "path": "/pool/main/libj/libjsoncpp",
+        "first_seen": "20201209T152717Z",
+        "size": 71472
+      }
+    ],
+    "4a098bf07fa1bfde7c2010dc8397e4bac3a0a7df": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_x32.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-x32/main/libj/libjsoncpp",
+        "first_seen": "20201209T152751Z",
+        "size": 79132
+      }
+    ],
+    "ce676f00606b5be88b131f8f20691d1f0554b9a9": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_mips64el.deb",
+        "archive_name": "debian",
+        "path": "/pool/main/libj/libjsoncpp",
+        "first_seen": "20201209T152717Z",
+        "size": 71808
+      }
+    ],
+    "93d94787fb4abccfa12a59e1338456e612df3438": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_alpha.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-alpha/main/libj/libjsoncpp",
+        "first_seen": "20201209T152751Z",
+        "size": 81496
+      }
+    ],
+    "9c7d823c083aa78ad9de515be0adf1b8baba317b": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_kfreebsd-amd64.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-kfreebsd-amd64/main/libj/libjsoncpp",
+        "first_seen": "20201209T152751Z",
+        "size": 78140
+      }
+    ],
+    "6de0703f5f676e6c1dbc295aae0a5804628d6a66": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_hppa.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-hppa/main/libj/libjsoncpp",
+        "first_seen": "20201209T152751Z",
+        "size": 81104
+      }
+    ],
+    "474faff508bc0cf8de8021c6f067b9f59a461f38": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_powerpc.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-powerpc/main/libj/libjsoncpp",
+        "first_seen": "20201209T152751Z",
+        "size": 80248
+      }
+    ],
+    "2b10f49e8877a974306634780bde4aa7f49d405c": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_armhf.deb",
+        "archive_name": "debian",
+        "path": "/pool/main/libj/libjsoncpp",
+        "first_seen": "20201209T152717Z",
+        "size": 68552
+      }
+    ],
+    "8a970b264d147064d0d1a0cc49cb2f680e13aaed": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_ppc64.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-ppc64/main/libj/libjsoncpp",
+        "first_seen": "20201209T152751Z",
+        "size": 84120
+      }
+    ],
+    "75787c729c848903d353a863463aad102e07a55d": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_mipsel.deb",
+        "archive_name": "debian",
+        "path": "/pool/main/libj/libjsoncpp",
+        "first_seen": "20201209T152717Z",
+        "size": 73156
+      }
+    ],
+    "b19818cd3362ede53005e5d14b4e2e884a07b1f4": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_hurd-i386.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-hurd-i386/main/libj/libjsoncpp",
+        "first_seen": "20201209T152751Z",
+        "size": 86104
+      }
+    ],
+    "4bcc22319d1252fe21a63173adf0f4ea8a15d65c": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_riscv64.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-riscv64/main/libj/libjsoncpp",
+        "first_seen": "20201209T152751Z",
+        "size": 74768
+      }
+    ],
+    "7d46b781d1368fa683a8b52277f92e733485e764": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_m68k.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-m68k/main/libj/libjsoncpp",
+        "first_seen": "20201209T152751Z",
+        "size": 77424
+      }
+    ],
+    "b275d57b6c13d57b4a9038df652fe7fc02841bb8": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_i386.deb",
+        "archive_name": "debian",
+        "path": "/pool/main/libj/libjsoncpp",
+        "first_seen": "20201209T152717Z",
+        "size": 86028
+      }
+    ],
+    "d64ca9c176156fa7c9dfe60e836968d6aec08eb0": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_sh4.deb",
+        "archive_name": "debian-ports",
+        "path": "/pool-sh4/main/libj/libjsoncpp",
+        "first_seen": "20201209T152751Z",
+        "size": 87832
+      }
+    ],
+    "665cec6be7e17bbc582f199d172bb763d1e75142": [
+      {
+        "name": "libjsoncpp24_1.9.4-3_ppc64el.deb",
+        "archive_name": "debian",
+        "path": "/pool/main/libj/libjsoncpp",
+        "first_seen": "20201209T152717Z",
+        "size": 82116
+      }
+    ]
+  }
+}

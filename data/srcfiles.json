@@ -1,0 +1,80 @@
+{
+  "_comment": "foo",
+  "version": "1.4p5-48",
+  "result": [
+    {
+      "hash": "a23269e950a249d2ef93625837cace45ddbce03b"
+    },
+    {
+      "hash": "e4d788981be6b218044bd074a345d847e62095f4"
+    },
+    {
+      "hash": "14167992698686085efcaba9d5823efe8420d8f6"
+    }
+  ],
+  "fileinfo": {
+    "a23269e950a249d2ef93625837cace45ddbce03b": [
+      {
+        "name": "aalib_1.4p5.orig.tar.gz",
+        "archive_name": "debian",
+        "path": "/pool/main/a/aalib",
+        "first_seen": "20050312T000000Z",
+        "size": 391028
+      },
+      {
+        "name": "aalib_1.4p5.orig.tar.gz",
+        "archive_name": "debian-archive",
+        "path": "/debian/pool/main/a/aalib",
+        "first_seen": "20090802T004153Z",
+        "size": 391028
+      },
+      {
+        "name": "aalib_1.4p5.orig.tar.gz",
+        "archive_name": "debian-archive",
+        "path": "/debian-amd64/pool/main/a/aalib",
+        "first_seen": "20090802T004153Z",
+        "size": 391028
+      },
+      {
+        "name": "aalib_1.4p5.orig.tar.gz",
+        "archive_name": "debian-debug",
+        "path": "/pool/main/a/aalib",
+        "first_seen": "20201022T143942Z",
+        "size": 391028
+      }
+    ],
+    "14167992698686085efcaba9d5823efe8420d8f6": [
+      {
+        "name": "aalib_1.4p5-48.debian.tar.xz",
+        "archive_name": "debian-debug",
+        "path": "/pool/main/a/aalib",
+        "first_seen": "20201022T143942Z",
+        "size": 16284
+      },
+      {
+        "name": "aalib_1.4p5-48.debian.tar.xz",
+        "archive_name": "debian",
+        "path": "/pool/main/a/aalib",
+        "first_seen": "20201022T144626Z",
+        "size": 16284
+      }
+    ],
+    "e4d788981be6b218044bd074a345d847e62095f4": [
+      {
+        "name": "aalib_1.4p5-48.dsc",
+        "archive_name": "debian-debug",
+        "path": "/pool/main/a/aalib",
+        "first_seen": "20201022T143942Z",
+        "size": 2059
+      },
+      {
+        "name": "aalib_1.4p5-48.dsc",
+        "archive_name": "debian",
+        "path": "/pool/main/a/aalib",
+        "first_seen": "20201022T144626Z",
+        "size": 2059
+      }
+    ]
+  },
+  "package": "aalib"
+}
