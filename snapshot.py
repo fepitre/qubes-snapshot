@@ -32,6 +32,7 @@ app = Flask(__name__)
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
+DEBIAN_SNAPSHOT = 'http://snapshot.debian.org'
 
 class ApiError(Exception):
     status_code = 400
@@ -66,9 +67,8 @@ def get_file_info(url):
         for data in resp.iter_content(8192):
             m.update(data)
         info["hash"] = m.hexdigest()
-        info["first_seen"] = parsedate(resp.headers["last-modified"]).strftime(
-            "%y%m%dT%H%M%SZ"
-        )
+        info["first_seen"] = parsedate(
+            resp.headers["last-modified"]).strftime("%y%m%dT%H%M%SZ")
         info["size"] = len(resp.content)
 
     return info
@@ -90,9 +90,9 @@ def get_src(srcpkgname, srcpkgver):
         prefix=prefix, srcpkgname=srcpkgname
     )
 
-    dsc = "%s_%s+deb11u1.dsc" % (srcpkgname, srcpkgver)
-    orig = "%s_%s.orig.tar.xz" % (srcpkgname, srcpkgver.split("-")[0])
-    debian = "%s_%s+deb11u1.debian.tar.xz" % (srcpkgname, srcpkgver)
+    dsc = "%s_%s.dsc" % (srcpkgname, srcpkgver)
+    orig = "%s_%s.orig.tar.gz" % (srcpkgname, srcpkgver.split("-")[0])
+    debian = "%s_%s.debian.tar.xz" % (srcpkgname, srcpkgver)
 
     info_dsc = get_file_info(
         "https://deb.qubes-os.org/r4.1/vm/{path}/{file}".format(
@@ -107,7 +107,8 @@ def get_src(srcpkgname, srcpkgver):
             path=path, file=debian)
     )
 
-    if info_dsc and info_orig and info_debian:
+    if info_dsc.get('hash', None) and info_orig.get('hash', None) and info_debian.get('hash', None):
+        status_code = info_dsc["status_code"]
         result = {
             "package": srcpkgname,
             "version": srcpkgver,
@@ -147,8 +148,16 @@ def get_src(srcpkgname, srcpkgver):
                 ],
             },
         }
-    result = json.dumps(result, indent=4) + "\n"
-    return Response(result, status=info_dsc["status_code"],
+        result = json.dumps(result, indent=4) + "\n"
+    else:
+        url = '{base_url}/mr/package/{pkg_name}/{pkg_ver}/srcfiles?fileinfo=1'.format(
+            base_url=DEBIAN_SNAPSHOT, pkg_name=srcpkgname, pkg_ver=srcpkgver)
+        resp = requests.get(url)
+        result = resp.content
+        status_code = resp.status_code
+
+
+    return Response(result, status=status_code,
                     mimetype="application/json")
 
 
@@ -170,7 +179,8 @@ def get_bin(pkg_name, pkg_ver):
     url = "https://deb.qubes-os.org/r4.1/vm/{path}/{deb}".format(
         path=path, deb=deb)
     info = get_file_info(url)
-    if info:
+    if info.get('hash', None):
+        status_code = info["status_code"]
         result = {
             "binary_version": pkg_ver,
             "binary": pkg_name,
@@ -193,8 +203,16 @@ def get_bin(pkg_name, pkg_ver):
                 ],
             },
         }
-    result = json.dumps(result, indent=4) + "\n"
-    return Response(result, status=info["status_code"],
+        result = json.dumps(result, indent=4) + "\n"
+    else:
+        url = '{base_url}/mr/binary/{pkg_name}/{pkg_ver}/binfiles?fileinfo=1'.format(
+            base_url=DEBIAN_SNAPSHOT, pkg_name=pkg_name, pkg_ver=pkg_ver)
+        resp = requests.get(url)
+        result = resp.content
+        status_code = resp.status_code
+
+
+    return Response(result, status=status_code,
                     mimetype="application/json")
 
 
