@@ -82,79 +82,86 @@ def get_src(srcpkgname, srcpkgver):
     """
 
     result = {}
-    if srcpkgname.startswith("lib"):
-        prefix = srcpkgname[0:4]
-    else:
-        prefix = srcpkgname[0]
-    path = "pool/main/{prefix}/{srcpkgname}".format(
-        prefix=prefix, srcpkgname=srcpkgname
-    )
+    status_code = 404
 
-    dsc = "%s_%s.dsc" % (srcpkgname, srcpkgver)
-    orig = "%s_%s.orig.tar.gz" % (srcpkgname, srcpkgver.split("-")[0])
-    debian = "%s_%s.debian.tar.xz" % (srcpkgname, srcpkgver)
-
-    info_dsc = get_file_info(
-        "https://deb.qubes-os.org/r4.1/vm/{path}/{file}".format(
-            path=path, file=dsc)
-    )
-    info_orig = get_file_info(
-        "https://deb.qubes-os.org/r4.1/vm/{path}/{file}".format(
-            path=path, file=orig)
-    )
-    info_debian = get_file_info(
-        "https://deb.qubes-os.org/r4.1/vm/{path}/{file}".format(
-            path=path, file=debian)
-    )
-
-    if info_dsc.get('hash', None) and info_orig.get('hash', None) and info_debian.get('hash', None):
-        status_code = info_dsc["status_code"]
-        result = {
-            "package": srcpkgname,
-            "version": srcpkgver,
-            "_comment": "foo",
-            "result": [
-                {"hash": info_dsc["hash"]},
-                {"hash": info_orig["hash"]},
-                {"hash": info_debian["hash"]},
-            ],
-            "fileinfo": {
-                info_dsc["hash"]: [
-                    {
-                        "name": dsc,
-                        "archive_name": "debian",
-                        "path": "/%s" % path,
-                        "first_seen": info_dsc["first_seen"],
-                        "size": info_dsc["size"],
-                    }
-                ],
-                info_orig["hash"]: [
-                    {
-                        "name": orig,
-                        "archive_name": "debian",
-                        "path": "/%s" % path,
-                        "first_seen": info_orig["first_seen"],
-                        "size": info_orig["size"],
-                    }
-                ],
-                info_debian["hash"]: [
-                    {
-                        "name": debian,
-                        "archive_name": "debian",
-                        "path": "/%s" % path,
-                        "first_seen": info_debian["first_seen"],
-                        "size": info_debian["size"],
-                    }
-                ],
-            },
-        }
-        result = json.dumps(result, indent=4) + "\n"
-    else:
-        url = '{base_url}/mr/package/{pkg_name}/{pkg_ver}/srcfiles?fileinfo=1'.format(
-            base_url=DEBIAN_SNAPSHOT, pkg_name=srcpkgname, pkg_ver=srcpkgver)
-        resp = requests.get(url)
+    debian_endpoint = '{base_url}/mr/package/{pkg_name}/{pkg_ver}/srcfiles?fileinfo=1'.format(
+        base_url=DEBIAN_SNAPSHOT, pkg_name=srcpkgname, pkg_ver=srcpkgver)
+    resp = requests.get(debian_endpoint)
+    if resp.ok:
         result = resp.content
         status_code = resp.status_code
+    else:
+        if srcpkgname.startswith("lib"):
+            prefix = srcpkgname[0:4]
+        else:
+            prefix = srcpkgname[0]
+        path = "pool/main/{prefix}/{srcpkgname}".format(
+            prefix=prefix, srcpkgname=srcpkgname
+        )
+
+        files = {
+            "dsc": ["%s_%s.dsc" % (srcpkgname, srcpkgver)],
+            "debian": ["%s_%s.debian.tar.xz" % (srcpkgname, srcpkgver)],
+            "orig": ["%s_%s.orig.tar.%s" % (srcpkgname, srcpkgver.split('-')[0], ext) for ext in ('gz', 'xz', 'bz2')]
+        }
+        info = {
+            "dsc": {},
+            "debian": {},
+            "orig": {}
+        }
+
+        for key in files.keys():
+            for f in files[key]:
+                url = "https://deb.qubes-os.org/r4.1/vm/{path}/{file}".format(
+                    path=path, file=f)
+                res = get_file_info(url)
+                if res.get("hash"):
+                    res["file"] = f
+                    info[key] = res
+                    break
+
+        if info["dsc"].get("hash", None) and info["debian"].get("hash", None) and info["orig"].get("hash", None):
+            status_code = info["dsc"]["status_code"]
+            result = {
+                "package": srcpkgname,
+                "version": srcpkgver,
+                "_comment": "foo",
+                "result": [
+                    {"hash": info["dsc"]["hash"]},
+                    {"hash": info["debian"]["hash"]},
+                    {"hash": info["orig"]["hash"]},
+                ],
+                "fileinfo": {
+                    info["dsc"]["hash"]: [
+                        {
+                            "name": info["dsc"]["file"],
+                            "archive_name": "debian",
+                            "path": "/%s" % path,
+                            "first_seen": info["dsc"]["first_seen"],
+                            "size": info["dsc"]["size"],
+                        }
+                    ],
+                    info["orig"]["hash"]: [
+                        {
+                            "name": info["orig"]["file"],
+                            "archive_name": "debian",
+                            "path": "/%s" % path,
+                            "first_seen": info["orig"]["first_seen"],
+                            "size": info["orig"]["size"],
+                        }
+                    ],
+                    info["debian"]["hash"]: [
+                        {
+                            "name": info["debian"]["file"],
+                            "archive_name": "debian",
+                            "path": "/%s" % path,
+                            "first_seen": info["debian"]["first_seen"],
+                            "size": info["debian"]["size"],
+                        }
+                    ],
+                },
+            }
+            result = json.dumps(result, indent=4) + "\n"
 
 
     return Response(result, status=status_code,
@@ -167,49 +174,52 @@ def get_bin(pkg_name, pkg_ver):
     """
     GET
     """
-
     result = {}
-    if pkg_name.startswith("lib"):
-        prefix = pkg_name[0:4]
-    else:
-        prefix = pkg_name[0]
-    deb = "%s_%s+deb11u1_amd64.deb" % (pkg_name, pkg_ver)
-    path = "pool/main/{prefix}/{pkg_name}".format(
-        prefix=prefix, pkg_name=pkg_name)
-    url = "https://deb.qubes-os.org/r4.1/vm/{path}/{deb}".format(
-        path=path, deb=deb)
-    info = get_file_info(url)
-    if info.get('hash', None):
-        status_code = info["status_code"]
-        result = {
-            "binary_version": pkg_ver,
-            "binary": pkg_name,
-            "_comment": "foo",
-            "result": [
-                {
-                    "hash": info["hash"],
-                    "architecture": "amd64",
-                }
-            ],
-            "fileinfo": {
-                info["hash"]: [
-                    {
-                        "name": deb,
-                        "archive_name": "debian",
-                        "path": "/%s" % path,
-                        "first_seen": info["first_seen"],
-                        "size": info["size"],
-                    }
-                ],
-            },
-        }
-        result = json.dumps(result, indent=4) + "\n"
-    else:
-        url = '{base_url}/mr/binary/{pkg_name}/{pkg_ver}/binfiles?fileinfo=1'.format(
-            base_url=DEBIAN_SNAPSHOT, pkg_name=pkg_name, pkg_ver=pkg_ver)
-        resp = requests.get(url)
+    status_code = 404
+
+    debian_endpoint = '{base_url}/mr/binary/{pkg_name}/{pkg_ver}/binfiles?fileinfo=1'.format(
+        base_url=DEBIAN_SNAPSHOT, pkg_name=pkg_name, pkg_ver=pkg_ver)
+    resp = requests.get(debian_endpoint)
+    if resp.ok:
         result = resp.content
         status_code = resp.status_code
+    else:
+        if pkg_name.startswith("lib"):
+            prefix = pkg_name[0:4]
+        else:
+            prefix = pkg_name[0]
+        deb = "%s_%s_amd64.deb" % (pkg_name, pkg_ver)
+        path = "pool/main/{prefix}/{pkg_name}".format(
+            prefix=prefix, pkg_name=pkg_name)
+        url = "https://deb.qubes-os.org/r4.1/vm/{path}/{deb}".format(
+            path=path, deb=deb)
+        info = get_file_info(url)
+        print(url)
+        if info.get("hash", None):
+            status_code = info["status_code"]
+            result = {
+                "binary_version": pkg_ver,
+                "binary": pkg_name,
+                "_comment": "foo",
+                "result": [
+                    {
+                        "hash": info["hash"],
+                        "architecture": "amd64",
+                    }
+                ],
+                "fileinfo": {
+                    info["hash"]: [
+                        {
+                            "name": deb,
+                            "archive_name": "debian",
+                            "path": "/%s" % path,
+                            "first_seen": info["first_seen"],
+                            "size": info["size"],
+                        }
+                    ],
+                },
+            }
+            result = json.dumps(result, indent=4) + "\n"
 
 
     return Response(result, status=status_code,
