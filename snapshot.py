@@ -84,7 +84,7 @@ def get_repo_files():
 
 @app.route("/mr/package/<string:srcpkgname>/<string:srcpkgver>/srcfiles",
            methods=["GET"])
-@cache.cached(timeout=3600)
+@cache.cached(timeout=86400)
 def get_src(srcpkgname, srcpkgver):
     api_result = {}
     status_code = 404
@@ -184,7 +184,7 @@ def get_src(srcpkgname, srcpkgver):
 
 @app.route("/mr/binary/<string:pkg_name>/<string:pkg_ver>/binfiles",
            methods=["GET"])
-@cache.cached(timeout=3600)
+@cache.cached(timeout=86400)
 def get_bin(pkg_name, pkg_ver):
     api_result = {}
     status_code = 404
