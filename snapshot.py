@@ -112,6 +112,7 @@ def get_src(srcpkgname, srcpkgver):
 
         files = {
             "dsc": ["%s_%s.dsc" % (srcpkgname, srcpkgver)],
+            "native": ["%s_%s.tar.xz" % (srcpkgname, srcpkgver)],
             "debian": ["%s_%s.debian.tar.xz" % (srcpkgname, srcpkgver)],
             "orig": [
                 "%s_%s.orig.tar.%s" % (srcpkgname, srcpkgver.split('-')[0], ext)
@@ -133,49 +134,80 @@ def get_src(srcpkgname, srcpkgver):
                     info[key] = res
                     break
 
-        if info["dsc"].get("hash", None) and \
-                info["debian"].get("hash", None) and \
-                info["orig"].get("hash", None):
-            status_code = info["dsc"]["status_code"]
-            api_result = {
-                "package": srcpkgname,
-                "version": srcpkgver,
-                "_comment": "foo",
-                "result": [
-                    {"hash": info["dsc"]["hash"]},
-                    {"hash": info["debian"]["hash"]},
-                    {"hash": info["orig"]["hash"]},
-                ],
-                "fileinfo": {
-                    info["dsc"]["hash"]: [
-                        {
-                            "name": info["dsc"]["file"],
-                            "archive_name": "debian",
-                            "path": "/%s" % path,
-                            "first_seen": info["dsc"]["first_seen"],
-                            "size": info["dsc"]["size"],
-                        }
+        if info["dsc"].get("hash", None):
+            if info["debian"].get("hash", None) and \
+                    info["orig"].get("hash", None):
+                status_code = info["dsc"]["status_code"]
+                api_result = {
+                    "package": srcpkgname,
+                    "version": srcpkgver,
+                    "_comment": "foo",
+                    "result": [
+                        {"hash": info["dsc"]["hash"]},
+                        {"hash": info["debian"]["hash"]},
+                        {"hash": info["orig"]["hash"]},
                     ],
-                    info["orig"]["hash"]: [
-                        {
-                            "name": info["orig"]["file"],
-                            "archive_name": "debian",
-                            "path": "/%s" % path,
-                            "first_seen": info["orig"]["first_seen"],
-                            "size": info["orig"]["size"],
-                        }
+                    "fileinfo": {
+                        info["dsc"]["hash"]: [
+                            {
+                                "name": info["dsc"]["file"],
+                                "archive_name": "debian",
+                                "path": "/%s" % path,
+                                "first_seen": info["dsc"]["first_seen"],
+                                "size": info["dsc"]["size"],
+                            }
+                        ],
+                        info["orig"]["hash"]: [
+                            {
+                                "name": info["orig"]["file"],
+                                "archive_name": "debian",
+                                "path": "/%s" % path,
+                                "first_seen": info["orig"]["first_seen"],
+                                "size": info["orig"]["size"],
+                            }
+                        ],
+                        info["debian"]["hash"]: [
+                            {
+                                "name": info["debian"]["file"],
+                                "archive_name": "debian",
+                                "path": "/%s" % path,
+                                "first_seen": info["debian"]["first_seen"],
+                                "size": info["debian"]["size"],
+                            }
+                        ],
+                    },
+                }
+            elif info["native"]:
+                status_code = info["dsc"]["status_code"]
+                api_result = {
+                    "package": srcpkgname,
+                    "version": srcpkgver,
+                    "_comment": "foo",
+                    "result": [
+                        {"hash": info["dsc"]["hash"]},
+                        {"hash": info["native"]["hash"]},
                     ],
-                    info["debian"]["hash"]: [
-                        {
-                            "name": info["debian"]["file"],
-                            "archive_name": "debian",
-                            "path": "/%s" % path,
-                            "first_seen": info["debian"]["first_seen"],
-                            "size": info["debian"]["size"],
-                        }
-                    ],
-                },
-            }
+                    "fileinfo": {
+                        info["dsc"]["hash"]: [
+                            {
+                                "name": info["dsc"]["file"],
+                                "archive_name": "debian",
+                                "path": "/%s" % path,
+                                "first_seen": info["dsc"]["first_seen"],
+                                "size": info["dsc"]["size"],
+                            }
+                        ],
+                        info["native"]["hash"]: [
+                            {
+                                "name": info["native"]["file"],
+                                "archive_name": "debian",
+                                "path": "/%s" % path,
+                                "first_seen": info["native"]["first_seen"],
+                                "size": info["native"]["size"],
+                            }
+                        ],
+                    },
+                }
             api_result = json.dumps(api_result, indent=4) + "\n"
 
     return Response(api_result, status=status_code,
