@@ -45,11 +45,12 @@ def get_response(url):
     while retries:
         try:
             resp = requests.get(url)
-            return resp
-        except requests.exceptions.ConnectionError:
-            logger.debug("Retry to get url: {}".format(url))
+            if not resp.ok:
+                raise requests.exceptions.ConnectionError(resp.status_code)
+        except requests.exceptions.ConnectionError as e:
+            logger.error("Retry to get url: {} ({})".format(url, str(e)))
             retries -= 1
-            time.sleep(3)
+            time.sleep(5)
     raise requests.exceptions.ConnectionError
 
 
@@ -239,13 +240,13 @@ def get_bin(pkg_name, pkg_ver):
             base_url=DEBIAN_SNAPSHOT, pkg_name=pkg_name, pkg_ver=pkg_ver)
     try:
         resp = get_response(debian_endpoint)
+        status_code = resp.status_code
     except requests.exceptions.ConnectionError:
         return Response(api_result, status=status_code,
                         mimetype="application/json")
 
     if resp.ok:
         api_result = resp.content
-        status_code = resp.status_code
     else:
         base_url = "https://deb.qubes-os.org/"
         # to be changed to remote content
