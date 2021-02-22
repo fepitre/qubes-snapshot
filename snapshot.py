@@ -25,6 +25,7 @@ import logging
 import requests
 import hashlib
 import subprocess
+import time
 
 from dateutil.parser import parse as parsedate
 from flask import Flask, Response
@@ -39,11 +40,24 @@ logging.basicConfig(level=logging.INFO)
 DEBIAN_SNAPSHOT = 'http://snapshot.debian.org'
 
 
+def get_response(url):
+    retries = 5
+    while retries:
+        try:
+            resp = requests.get(url)
+            return resp
+        except requests.exceptions.ConnectionError:
+            logger.debug("Retry to get url: {}".format(url))
+            retries -= 1
+            time.sleep(3)
+    raise requests.exceptions.ConnectionError
+
+
 # Useful function to get snapshot content type
 def get_file_info(url):
     info = {}
     try:
-        resp = requests.get(url)
+        resp = get_response(url)
         info["status_code"] = resp.status_code
         if resp.ok:
             m = hashlib.md5()
@@ -93,7 +107,7 @@ def get_src(srcpkgname, srcpkgver):
         '{base_url}/mr/package/{pkg_name}/{pkg_ver}/srcfiles?fileinfo=1'.format(
             base_url=DEBIAN_SNAPSHOT, pkg_name=srcpkgname, pkg_ver=srcpkgver)
     try:
-        resp = requests.get(debian_endpoint)
+        resp = get_response(debian_endpoint)
     except requests.exceptions.ConnectionError:
         return Response(api_result, status=status_code,
                         mimetype="application/json")
@@ -224,7 +238,7 @@ def get_bin(pkg_name, pkg_ver):
         '{base_url}/mr/binary/{pkg_name}/{pkg_ver}/binfiles?fileinfo=1'.format(
             base_url=DEBIAN_SNAPSHOT, pkg_name=pkg_name, pkg_ver=pkg_ver)
     try:
-        resp = requests.get(debian_endpoint)
+        resp = get_response(debian_endpoint)
     except requests.exceptions.ConnectionError:
         return Response(api_result, status=status_code,
                         mimetype="application/json")
