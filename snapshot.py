@@ -108,13 +108,13 @@ def get_src(srcpkgname, srcpkgver):
             base_url=DEBIAN_SNAPSHOT, pkg_name=srcpkgname, pkg_ver=srcpkgver)
     try:
         resp = get_response(debian_endpoint)
+        status_code = resp.status_code
     except requests.exceptions.ConnectionError:
         return Response(api_result, status=status_code,
                         mimetype="application/json")
 
     if resp.ok:
         api_result = resp.content
-        status_code = resp.status_code
     else:
         if srcpkgname.startswith("lib"):
             prefix = srcpkgname[0:4]
